@@ -1,0 +1,595 @@
+\chapter{Software Information: How to Run Macros?}
+The best platform to run the simulation is on Linux. In case if this OS is not available then Linux VM can suffice. Installation process of Linux VM is described in following section.
+\section{Setting up a Linux VM (for non-Linux users)}       %included this since all users don't use Linux natively, and our analysis would be better on Linux
+% It would be best if this section is written someone who has used Linux VM - Simran, 9July2022
+
+
+
+
+
+\section{Software Dependencies}
+In this section, we will discuss two main software packages that are integral part of simulation and analysis of HEP experiments as well as the current work. These two packages are GEANT4 which is simulation tool and ROOT which is an analyis tool. Section 3.2.1 and Section 3.2.2 introduce these software along with their installation procedures.
+
+\subsection{GEANT4}
+Geant4 (for GEometry ANd Tracking) is a toolkit for the simulation of the passage of particles through matter. Its areas of application include high energy, nuclear and accelerator physics, as well as studies in medical and space science.
+
+A \textit{simulation} is an approximate imitation of the operation of a process or system; that represents its operation over time. Computer simulations of high-energy particle collisions provide a detailed theoretical reference for the measurements performed at accelerators like the Large Hadron Collider (LHC), against which models of both known and 'new' physics can be tested, down to the level of individual particles. By looking for discrepancies between the simulations and the data, we are searching for any sign of disagreement between the current theories and the physical universe. Ultimately, \textit{such a disagreement could lead us to the discovery of new phenomena,} which may be associated with new fundamental principles of nature.
+ 
+\subsubsection{Installation}
+\begin{itemize}
+	\item  OS/Software Prerequisites:
+		The following source/software must be present to build Geant4:
+	\begin{enumerate}
+		\item Geant4 Toolkit Source Code.
+		\item C++ Compiler and Standard Library supporting the C++ 11 Standard
+		\item Libraries: g++-4.9, Make, Cmake-3.3  or  higher, Xerces-c++, Opengl, Qt4  or  Qt5, motif UI,x11, libxmu-dev, libxmu-header
+	\end{enumerate}
+		
+	\item Download following source files:
+	\begin{enumerate}
+		\item CLHEP source file
+		
+		http://proj-clhep.web.cern.ch/proj-clhep/clhep23.html
+		\item Geant4 source file 
+		
+		https://geant4.web.cern.ch/geant4/support/download.shtml
+	\end{enumerate}
+		
+\end{itemize}
+
+\subsubsubsection{CLHEP Installation}
+\begin{itemize}
+	\item Create a directory CLHEP (on terminal):
+	
+	$\$ $ mkdir CLHEP
+	
+	$\$ $ cd CLHEP
+	
+	\item Copy the CLHEP tar file (clhep-2.3.3.2.tgz) to this directory 
+	\item Untar the tar file using command (on terminal):
+	
+	$\$ $ tar -zxvf clhep-2.3.3.2.tgz
+	 
+	\item This command will give the source file in the form of directory 2.3.3.2.
+	\item Create another directory CLHEP$\_$build inside CLHEP directory, where the CLHEP lib will be installed.
+	
+	$\$ $ mkdir CLHEP$\_$build
+	
+	$\$ $ ls
+	
+	 2.3.3.2  \,    CLHEP$\_$build  (Note: here you see two directories)
+	 
+	 $\$ $ cd CLHEP$\_$build
+	 
+	 \item Installation Steps:
+	 
+	 $\$ $ cmake-DCMAKE$\_$INSTALL$\_$PREFIX= /home/user/CLHEP/2.3.3.2/CLHEP-install 
+	 
+	 /home/user/CLHEP/2.3.3.2
+	 
+	 $\$ $ make test
+	 
+	 $\$ $ make install
+	 
+	 This will generate the directory 'CLHEP-install'.
+	 \item Set environment variables in .bashrc
+	 
+	 export CLHEP$\_$DIR=
+	 
+	 /home/user/CLHEP/2.3.3.2/CLHEP-install
+	 
+	 /export CLHEP$\_$INCLUDE$\_$DIR=$\$${CLHEP$\_$DIR}/include/export
+	 
+	 CLHEP$\_$LIBRARY=$\$${CLHEP$\_$DIR}/lib/export LD$\_$LIBRARY$\_$PATH=
+	 
+	 $\$${CLHEP$\_$LIBRARY}:$\$${LD$\_$LIBRARY$\_$PATH}export
+	 
+	 PATH=$\$$CLHEP$\_$DIR/bin/:$\$$PATH
+	
+\end{itemize}
+
+\subsubsubsection{Geant4 Installation}
+\begin{itemize}
+	\item Create a directory 'Geant4' (on terminal)
+	
+	$\$$ mkdir Geant4
+	
+	\item Copy the source tar file in this directory and untar it using command:
+	
+	$\$$ tar -zxvf geant4.10.02.p02.tar.gz                 
+	
+	This will generate source directory 'geant4.10.02.p02' inside the directory 'Geant4'.
+	
+	\item Create another directory 'geant4$\_$build' inside the directory 'Geant4'
+	
+	$\$$ mkdir geant4$\_$build                                               
+	
+	$\$$ cd geant4$\_$build
+	
+	\item Follow the given installation steps:
+	
+	cmake -DCMAKE$\_$INSTALL$\_$PREFIX= /home/user/Geant4
+	
+	/geant4.10.02.p02-install -DGEANT4$\_$USE$\_$QT=ON
+	
+	-DGEANT4$\_$USE$\_$OPENGL$\_$X11=ON 
+	
+	-DGEANT4$\_$INSTALL$\_$DATA=ON-DGEANT4$\_$USE$\_$RAYTRACER$\_$X11=ON 
+	
+	-DGEANT4$\_$USE$\_$GDML=ON  -DGEANT4$\_$USE$\_$SYSTEM$\_$CLHEP=ON 
+	
+	-DCLHEP$\_$INCLUDE$\_$DIR=/home/user/CLHEP/2.3.3.2/CLHEP-install/include/
+	
+	-DCLHEP$\_$LIBRARY=/home/user/CLHEP/2.3.3.2/CLHEP-install/lib/libCLHEP.so 
+	
+	-DGEANT4$\_$INSTALL$\_$EXAMPLES
+	
+	=ON /home/user/Geant4/geant4.10.02.p02 
+	
+	$\$$ make -jN   
+	
+	$\$$ make install
+	
+	This will generate directory 'geant4.10.02.p02-install'.
+	
+	\item Set environment variables in .bashrc                                                                            
+	
+	source/home/user/Geant4/geant4.10.02.p02-install/bin/geant4.sh
+	
+\end{itemize}
+
+\subsubsection{Running an example}
+\begin{itemize}
+	\item Create a work directory 'g4work' and copy the directory 'B1' from
+	
+	/home/user/Geant4/geant4.10.02.p02-install/share/geant4.10.02/examples/basic/B1 
+	
+	to the work directory using below commands:
+	
+	$\$$ mkdir g4work
+	
+	$\$$ cp -r 
+	
+	/home/user/Geant4/geant4.10.02.p02-install/share/ \,  geant4.10.02/examples/basic/B1  
+	
+	/home/user/g4work/
+	
+	$\$$ cd g4work/B1/
+	
+	$\$$ export G4WORKDIR=~/g4work/B1/
+	
+	$\$$ make
+	
+	This will generate a directory 'bin' inside directory ~/g4work/B1/ which will have executable green file 'exampleB1'.
+	
+	\item Now copy the executable green file 'exampleB1' in the directory B1 where the macro files (ex.= vis.mac, init$\_$vis.mac etc.) are present and run it using following command:
+	
+	$\$$ cd  g4work/B1/bin/Linux-g++/
+	
+	$\$$ ls
+	
+	$\$$ exampleB1   \,    (green colour)
+	
+	$\$$ cp exampleB1 /home/user/g4work/B1/
+	
+	$\$$ cd  g4work/B1/
+	
+	$\$$ ./exampleB1
+	
+	This will generate the geometry.
+	 
+	% put geometry image here
+\end{itemize}
+
+\subsubsection{Guide for programming in Geant4}
+The main() method is implemented by two toolkit classes \cite{geant4}:
+
+\textbf{G4RunManager} and \textbf{G4UImanager} 
+
+and three classes:
+
+\textbf{ExG4DetectorConstruction01}
+
+\textbf{ExG4PhysicsList00}
+
+\textbf{ExG4ActionInitialization01}\\
+\textbf{Simplest example of main():}\cite{geant4}\\
+$\#$include "G4RunManager.hh" \\
+$\#$include "G4UImanager.hh" \\
+$\#$include "ExG4DetectorConstruction01.hh" \\
+$\#$include "ExG4PhysicsList00.hh" \\
+$\#$include "ExG4ActionInitialization01.hh"\\
+int main()\\
+$\{$ \\ 
+// construct the default run manager \\
+G4RunManager* runManager = new G4RunManager;\\
+// set mandatory initialization classes \\
+runManager->SetUserInitialization(new ExG4DetectorConstruction01); \\
+runManager->SetUserInitialization(new ExG4PhysicsList00);\\
+runManager->SetUserInitialization(new ExG4ActionInitialization01);\\
+runManager->Initialize();    \, \,    // initialize G4 kernel\\
+G4UImanager* UI = G4UImanager::GetUIpointer();    \, \,    // get the pointer to the UI manager and set verbosities\\
+UI->ApplyCommand("/run/verbose 1");\\
+UI->ApplyCommand("/event/verbose 1");\\
+UI->ApplyCommand("/tracking/verbose 1");\\
+int numberOfEvent = 3;   \, \,    // start a run \\
+runManager->BeamOn(numberOfEvent);\\
+delete runManager;  \, \,    // job termination \\
+return 0;\\
+$\}$\\
+
+\textbf{G4RunManager:}
+
+The only manager class in the Geant4 kernel which should be explicitly constructed in the main() is the \textit{G4RunManager}. It controls the flow of the program and manages the event loop(s) within a run.
+
+The run manager is also responsible for managing initialization procedures and must be given all the information necessary to build and run the simulation, including
+
+\begin{enumerate}
+	\item how the detector should be constructed,
+	\item all the particles and all the physics processes to be simulated,
+	\item  how the primary particle(s) in an event should be produced, and
+	\item any additional requirements of the simulation.
+\end{enumerate}
+
+In the sample main(), the lines\\
+\textit{runManager->SetUserInitialization(new ExG4DetectorConstruction01);\\
+runManager->SetUserInitialization(new ExG4PhysicsList00);\\
+runManager->SetUserInitialization(new ExG4ActionInitialization01);\\} 
+create objects which specify the detector geometry, physics processes and primary particle, respectively, and pass their pointers to the run manager\cite{geant4}.
+
+
+\textbf{G4UImanager and UI Command Submission:}
+
+Geant4 provides a category named intercoms. \textit{G4UImanager} is the manager class of this category. 
+Using the functionalities of this category, you can invoke set methods of class objects of which you do not know the pointer\cite{geant4}.
+
+
+\textbf{G4cout and G4cerr:}
+
+\textit{G4cout} and \textit{G4cerr} are iostream objects defined by GEANT 4.
+
+The usage of these objects is exactly the same as the ordinary cout and cerr, except that the output streams will be handled by G4UImanager.
+These objects should be used instead of the ordinary cout and cerr\cite{geant4}.
+
+
+
+
+
+
+
+\subsection{ROOT}
+ROOT is an object-oriented program and library developed by CERN. It is a modular scientific software toolkit. It provides all the functionalities needed to deal with big data processing, statistical analysis, visualisation and storage. It is mainly written in C++ but integrated with other languages such as Python and R. Its areas of application include particle physics, data analysis, astronomy and data mining\cite{wiki:1}.
+
+ROOT includes packages for:
+\begin{itemize}
+	\item \textbf{Histograms} and \textbf{Graphs} to view and analyze distributions and functions,
+	\item \textbf{Curve Fitting}  and minimization of functionals,
+	\item Statistics tools for \textbf{data analysis},
+	\item \textbf{Matrix Algebra},
+	\item \textbf{Four-vector} computations, as used in HEP,
+	\item standard mathematical functions, and many more\cite{wiki:1}.
+\end{itemize}
+
+\subsection{Features of ROOT}
+A key feature of ROOT is a data container called \textit{tree}, with its substructures \textit{branches} and \textit{leaves}. A tree can be seen as a sliding window to the raw data, as stored in a file. Data from the next entry in the file can be retrieved by advancing the index in the tree. This avoids memory allocation problems associated with object creation, and allows the tree to act as a lightweight container while handling buffering invisibly. 
+
+All the classes in ROOT have prefix T. In case you want to store large quantities of same-class objects, ROOT has designed the \textbf{TTree} and \textbf{TNtuple} classes specifically for that purpose. The TTree class is optimized to reduce disk space and enhance access speed. A TNtuple is a TTree that is limited to only hold floating-point numbers; a TTree on the other hand can hold all kind of data, such as objects or arrays in addition to all the simple types. 
+
+When using a TTree, we fill its branch buffers with leaf data and the buffers are written to disk when it is full\cite{wiki:1}.
+
+
+\subsection{Installation}
+There are a number of root versions available online which are updated regularly. It is most suitable to use Root on Linux or Mac. Following procedure is for Root installation on Linux.
+
+\begin{enumerate}
+	\item Go to https://root.cern.ch/releases, choose a version suitable for you and download its source file.
+	\item Install 
+	build prerequisites 
+	for root using terminal from following website:
+	
+	\href{https://root.cern.ch/build-prerequisites}{https://root.cern.ch/build-prerequisites}
+	\item Create a folder named "root" and copy the downloaded tar file in it.
+	
+	$\$$ mkdir root
+	
+	$\$$ cp Downloads/root$\_$version.source.tar.gz
+	
+	\item Untar the source file using following command 
+	
+	$\$$ tar -xzvf root$\_$version.source.tar.gz
+	
+	This will create a folder "root-version" containing extracted files.
+	
+	\item Now build and install root using following commands
+	
+	$\$$ cmake ../root-version/  \, Dall=ON
+	
+	$\$$ cmake --build . -- -j(N)  \, \, (N=no. of cores in your pc)
+	
+	\item Now root has been built. To check its working run root.
+	
+	$\$$ . bin/thisroot.sh
+	
+	$\$$ root
+	
+	\item Set environment variables in .bashrc file by adding following commands in it.
+	
+	export ROOTSYS=/home/user/root/root
+	
+	export PATH=$\$$ROOTSYS/bin:$\$$PATH
+	
+	export LD$\_$LIBRARY$\_$PATH=$\$$ROOTSYS/lib/:$\$$LD$\_$LIBRARY$\_$PATH
+
+\end{enumerate}
+
+
+\section{Fun4All Macros}
+The macros can be downloaded from GitHub. The link to the macros is 
+
+\href{https://github.com/eic/fun4all_eic_qa}{https://github.com/eic/fun4all\_eic\_qa} 
+
+The macros can be cloned using command line as follows:
+
+\$ git clone https://github.com/eic/fun4all$\_$eic$\_$qa
+
+In order to run these macros, we need to set environment variables which are discussed later. Let us now discuss the procedure and requirements for working locally followed by procedure for working using a BNL account.
+
+\section{Setting up your Environment}
+In section 3.1, we discussed the installation procedure for two main software packages that are required for running the simulation and the macros described in section 3.2. Their installation may not be required if the user possesses a BNL account and by using ssh and no machine, it is possible to work on sdcc remote desktop where all the prerequisites are already installed. 
+
+In case if access to BNL account is not available, then it is possible to locally run macros by installing singularity container.
+
+Procedure for both of the above scenarios will be explained in the following sections.
+
+
+
+
+\subsection{Getting SDCC account}
+1. Go to \href{https://www.sdcc.bnl.gov/#accounts}{ https://www.sdcc.bnl.gov/\#accounts } and first refer to the procedure highlighted there. The brief overview of the full procedure is as follows:
+
+2. First, you need to obtain a guest number from \href{https://www.bnl.gov/guv/gis.php}{https://www.bnl.gov/guv/gis.php}
+
+3. Click on ‘Begin your registration’ and choose ‘New Registration’.
+
+4. Step by step, fill in all the details asked. (Also, do not leave any gap in your qualifications while uploading your CV)
+
+5. You will obtain a GR number (which is not your guest number) which can be used to access your application.
+
+6. After successfully submitting the application, you will get a mail asking you to upload your ID proof. Follow the instructions in the mail and do as directed.
+
+7. After successful validation of your details, you will obtain a guest number which you can use to proceed with your application for bnl account.
+
+8. After obtaining your guest number, you need to go for CyberSecurity Training at http://training.bnl.gov/ where you will need your guest number to login. (Or you may obtain the link for training via the email which sent you your guest number)
+
+9. After this step, you can apply for a User Account by filling the form given at \href{https://www.sdcc.bnl.gov/#accounts}{https://www.sdcc.bnl.gov/\#accounts}. You will be asked to choose a user name and upload the ssh key and its fingerprint. Instructions for uploading the key can be obtained from \href{https://www.racf.bnl.gov/docs/authentication/ssh/keygen}{https://www.racf.bnl.gov/docs/authentication/ssh/keygen}.
+
+(Note: You need to remember the passphrase for your key and also your Kerberos password in order to access your account later so, note them down somewhere for reference.)
+
+10. After the successful completion of these steps, your account will be created and you will be informed via an email.
+
+11. Then you can use your username to access your account via terminal by using the following command
+
+\$ ssh -Y username\@ssh.sdcc.bnl.gov
+
+12 You will be first asked the passphrase for your key and then enter the following command.
+
+\$ rterm -i
+
+13. At this point, you will be prompted for your Kerberos password. After entering it, you will be in your eic home directory where you can do your work.
+
+Additional options: You can also set up an nx for faster access rather than using terminal. Follow the instructions given in the following link.
+
+\href{https://www.racf.bnl.gov/docs/services/nx}{https://www.racf.bnl.gov/docs/services/nx}
+
+
+
+
+\subsection{Local Installation (for Non-BNL Users)}
+
+For working locally, Singularity container is required. This is useful if you want to run small number of events because output files are mostly in gigabytes when we try get higher statistics. You may refer \href{https://github.com/eic/Singularity}{https://github.com/eic/Singularity}  for this. All the steps are given there and could be updated with time so refer to the link first.
+
+
+Option 1: Mount EIC CVMFS
+
+
+1. Download the singularity container.
+
+- Run the following command on terminal
+
+\$ sudo apt-get install libtool m4 automake
+
+- Go to \href{https://sylabs.io/singularity/}{https://sylabs.io/singularity/} and download the latest version of singularity.
+
+- Install dependencies
+
+sudo apt-get update \&\& sudo apt-get install -y \
+
+    build-essential \
+    
+    libssl-dev \
+    
+    uuid-dev \
+    
+    libgpgme11-dev \
+    
+    squashfs-tools \
+    
+    libseccomp-dev \
+    
+    pkg-config
+    
+- Install Go
+
+Go to \href{https://golang.org/doc/install}{https://golang.org/doc/install} and download latest version of Go.
+
+Installation steps for Go: Copy the downloaded file to home directory then
+
+\$ tar -C /usr/local -xzf go\$VERSION.\$OS-\$ARCH.tar.gz
+
+(make required changes in the command according to the name of the download file)
+
+\$ export PATH=\$PATH:/usr/local/go/bin
+
+Test your installation:
+
+Create a file named ‘hello.go’ that looks like:
+
+	package main
+	
+	import “fmt”
+
+	func main() {
+	
+fmt.Printf(“hello world \textbackslash n”)
+
+}
+
+Then build it with the go tool:
+
+\$ go build hello.go
+
+The command above will build an executable named hello in the current directory alongside your source code. Execute it to see the greeting:
+
+\$ ./hello
+
+hello world
+
+Now go is working.
+
+- Compile singularity by running following commands one by one. ( Before this copy the downloaded singularity file to the home directory) 
+
+\$ .\slash mconfig \&\& \textbackslash
+
+make -C .\slash builddir \&\& \textbackslash
+
+sudo make -C .\slash builddir install
+
+. \slash usr\slash local/etc/bash$\_$completion.d/singularity
+
+
+Now singularity is installed.
+
+2. Download CVMFS from CERN
+
+Go to https://cernvm.cern.ch/fs/
+
+Run the apt commands:
+
+sudo apt-get install lsb-release
+
+wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest$\_$all.deb
+
+sudo dpkg -i cvmfs-release-latest$\_$all.deb
+
+rm -f cvmfs-release-latest$\_$all.deb
+
+sudo apt-get update
+
+Download core packages for your operating system: client, server, libcvmfs
+
+Install the downloaded files by clicking on them which takes you to the Ubuntu software in case of Ubuntu.
+
+Next, For the basic setup, run
+
+cvmfs$\_$config setup
+
+(use sudo in front of it if it asks fir root privileges)
+
+Go to cvmfs in etc by using following command
+
+cd /etc/cvmfs
+
+sudo emacs default.local
+
+Edit this file and add following content to it:
+
+CVMFS$\_$REPOSITORIES = eic.opensciencegrid.org
+
+CVMFS$\_$HTTP$\_$PROXY="DIRECT"
+
+CVMFS$\_$CACHE$\_$BASE=/var/cvmfs
+
+CVMFS$\_$QUOTA$\_$LIMIT=25000
+
+\# r/w client fix for EL 6 kernel:
+
+CVMFS$\_$MOUNT$\_$RW=yes
+
+\# restrict client mounts to known repos/domains:
+
+CVMFS$\_$STRICT$\_$MOUNT=no
+
+Now run the following commands:
+
+cvmfs$\_$config probe
+
+If all is OK then CVMFS is installed properly.
+
+3. Launch singularity container for EIC Fun4All with following command:
+
+singularity shell -B /cvmfs:/cvmfs /cvmfs/eic.opensciencegrid.org/singularity/rhic$\_$sl7$\_$ext.simg
+
+Option 2: Download the EIC Fun4All build via HTTPS archive
+
+1. Go to folder where you are going to download this using terminal
+
+2. Download this repository:
+
+git clone https://github.com/eic/Singularity.git
+
+cd Singularity/
+
+3. Run the download/update macro updatebuild.sh.
+
+./updatebuild.sh
+
+4. Start the container with
+
+singularity shell -B cvmfs:/cvmfs cvmfs/eic.opensciencegrid.org/singularity/rhic$\_$sl7$\_$ext.simg
+
+\section{Running simulation}
+Once your preferred choice of platform to run simulation is ready, You must set the environment variables first. 
+
+For working locally, use 
+
+\$ source /cvmfs/eic.opensciencegrid.org/default/opt/fun4all/core/bin/eic\_setup.sh -n
+
+For working using ssh or on nx, use
+
+\$ source /cvmfs/eic.opensciencegrid.org/default/opt/fun4all/core/bin/eic\_setup.csh -n
+
+Then follow these steps
+
+\$ cd fun4all\_eic\_qa/macros
+
+Make changes to Fun4All\_G4\_EICDetector.C in the simple particle generator section. Set particles either 'e-' or 'pi-', momentum range 0-30 GeV, eta range -4 to 4. Run the macro using following command.
+
+\$ root -q -b Fun4All\_G4\_EICDetector.C\textbackslash(2000\textbackslash)
+
+The analysis is performed on the output file G4EICDetector.root by running another macro that obtains information for a particular calorimeter. (Refer next chapter for details regarding calorimeters)
+
+\$  root.exe -q -b RunEval.C\textbackslash(\textbackslash"EEMC\textbackslash",\textbackslash"G4EICDetector.root\textbackslash"\textbackslash)
+
+Just change the calorimeter name here and obtain the Eval\_"calorimeter\_name".root file. In order to read the branches of this file, use the code LoopEval.C and perform the required analysis.
+
+\subsection{Submitting Condor jobs (for BNL users only)}
+For running large number of events, we can also submit jobs only ssh. In the file myscript.csh, edit the commands you need to run or change the number of particles. Then submit the job using condor.job in the following way.
+
+\$ condor\_submit condor.job
+
+The status of the job can be checked using 
+
+\$ condor\_q 
+
+The output and error of the completed job is available in \textit{condor.out} and \textit{condor.err} respectively.
+
+
+
+
+
+
+
+\section{Location of macros and code used in this analysis}
+
+\textbf{Group 1:}  https://github.com/simran2296/Fun4All-Calorimeter-Macros\\
+\textbf{Group 2:}

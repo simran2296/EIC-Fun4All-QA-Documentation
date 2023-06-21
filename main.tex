@@ -1,11 +1,36 @@
-\documentclass[12pt, letterpaper]{article}
+% Shall we try some other LaTeX template? We have a personal bias towards a two-column one - specifically, https://www.overleaf.com/project/618b6037bf0219452a970687
 
+
+\documentclass[12pt]{report}
+
+\usepackage{graphicx,wrapfig, float}
+%\graphicspath{{gfx/}} %for adding images
+\usepackage{comment}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+\usepackage{array}
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+\usepackage{hhline}% http://ctan.org/pkg/hhline
 \input{usepackages}
 \input{page_margin}
 
+\pagenumbering{roman}
+
 \begin{document}
 \input{titlepage}
-
+\newpage
+\input{ackment}
+\addcontentsline{toc}{chapter}{Acknowledgement}
+\newpage
+\input{abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 \newpage
 \tableofcontents
 \newpage
@@ -14,17 +39,31 @@
 \newpage
 
 %\addcontentsline{toc}{section}{\nameref{intro}}
+\pagenumbering{arabic}
 
-\section{Introduction}
+\input{Chapters/ch1}
+\input{Chapters/ch2}
+\input{Chapters/ch3}
+\input{Chapters/ch4}
+\input{Chapters/ch5}
+\input{Chapters/ch6}
 
-\section{Software Information: How to run macros?}
 
-\section{Analysis Details}
-
-\section{Discussion and Conclusion}
 
 \newpage
-\bibliographystyle{ieeetr}
+
+\bibliographystyle{unsrt}
+\bibliography{ref}
+%\bibliographystyle{ieeetr}
 %\bibliography{ref}
 
 \end{document}
+
+
+
+
+
+
+
+
+
